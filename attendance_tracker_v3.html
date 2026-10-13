@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="light" />
+<meta name="theme-color" content="#f7f8fc" />
+<meta name="description" content="Attendly：7 科逐科獨立計算出席率，包含跨兩個 Semester 的 CED4831M；資料儲存在瀏覽器。" />
+<title>Attendly V3 · 2026–27 獨立出席追蹤</title>
+<style>
+:root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang HK","Microsoft JhengHei",sans-serif;color:#1d2840;background:#f7f8fc;font-synthesis:none;--p:#665be8;--pale:#f0eeff;--ink:#1d2840;--muted:#7e899d;--line:#e9ecf4;--green:#128a6f;--red:#d75f66;--surface:#fff;--shadow:0 9px 33px rgba(42,47,91,.035)}
+*{box-sizing:border-box} body{margin:0;min-height:100vh} button,input,select{font:inherit} button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.45}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #bcb5ff;outline-offset:2px} .container{width:min(1160px,calc(100% - 40px));margin:auto}
+header{background:white;border-bottom:1px solid #e9edf6} .nav{display:flex;justify-content:space-between;align-items:center;min-height:74px;gap:16px}.brand{display:flex;align-items:center;gap:11px}.mark{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;color:white;background:var(--p);font-size:21px;font-weight:800;box-shadow:0 7px 17px #665be830}.logo{font-weight:850;font-size:22px;letter-spacing:-.7px}.logo span{color:var(--p)}.caption{font-size:10px;letter-spacing:1.2px;font-weight:800;color:#9aa4b4}.semester{background:#f2f1ff;color:#6258c5;padding:9px 14px;border-radius:25px;font-size:12px;font-weight:750}
+main{padding:39px 0 70px}.eyebrow{font-size:11px;font-weight:850;letter-spacing:1.6px;color:var(--p)}.hero{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:24px}h1{font-size:clamp(28px,4vw,40px);letter-spacing:-1.5px;line-height:1.25;margin:11px 0 9px} h1 em{font-style:normal;color:var(--p)}.subtitle{font-size:13px;color:var(--muted);line-height:1.8;margin:0}.smallmeta{font-size:12px;color:#8c93a6;background:white;border:1px solid var(--line);padding:10px 14px;border-radius:25px;white-space:nowrap}
+.card{background:var(--surface);border:1px solid #eaeef5;box-shadow:var(--shadow);border-radius:20px}.overview{display:grid;grid-template-columns:1.2fr .8fr;gap:17px}.ratecard{min-height:242px;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:32px 34px}.overline{font-size:12px;color:#8791a4;font-weight:760}.huge{font-size:clamp(52px,6vw,70px);font-weight:850;letter-spacing:-3px;line-height:1.1;margin:10px 0 8px}.huge small{font-size:.5em;letter-spacing:0}.support{color:#929bad;font-size:12px;line-height:1.75}.tag{display:inline-block;margin-top:16px;padding:8px 11px;background:#ecf8f3;color:var(--green);border-radius:8px;font-size:11px;font-weight:770}.ring{--value:100%;width:174px;height:174px;border-radius:50%;background:conic-gradient(var(--p) var(--value),#eceefa 0);padding:14px;flex:0 0 174px;display:grid;place-items:center}.ring-inner{width:100%;height:100%;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--p)}.ring-inner b{font-size:26px}.ring-inner span{font-size:11px;color:var(--muted)}.tiles{display:grid;grid-template-columns:1fr 1fr;gap:14px}.tile{padding:23px;min-height:112px;display:flex;flex-direction:column;justify-content:space-between}.tile-label{font-size:12px;color:#8c95a5;font-weight:720}.tile-value{font-size:26px;font-weight:850;font-variant-numeric:tabular-nums}.tile-value small{font-size:13px;color:#959eb0;font-weight:600}.note{margin-top:16px;border:1px solid #e4e3ff;background:#f5f4ff;color:#676388;border-radius:13px;padding:13px 16px;font-size:12px;line-height:1.85}.note strong{color:#5148be}
+.section{margin-top:31px}.heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.heading h2{font-size:19px;letter-spacing:-.4px;margin:0}.heading p{font-size:12px;color:#9da6b6;margin:6px 0 0;line-height:1.7}.course-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.course{padding:21px 20px 20px}.course-top{display:flex;justify-content:space-between;align-items:start;gap:8px}.course-name{font-size:17px;font-weight:850;letter-spacing:-.3px}.course-type{font-size:11px;color:#9a9fb1;margin-top:5px;line-height:1.45;min-height:32px}.dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto;margin-top:3px}.course-rate{font-size:30px;font-weight:860;letter-spacing:-1px;margin-top:12px;line-height:1.1}.course-rate small{font-size:15px}.course-hint{color:#8995a9;font-size:11px;line-height:1.8;margin-top:4px}.track{height:8px;border-radius:10px;background:#edf0f6;margin-top:16px;overflow:hidden}.track>div{height:100%;background:var(--p);border-radius:10px;transition:width .2s}.course-line{font-size:11px;color:#8390a4;display:flex;justify-content:space-between;gap:6px;margin-top:11px}.course-line b{color:#3a455e}.course-time{border-top:1px solid var(--line);margin-top:15px;padding-top:13px;color:#768198;font-size:11px;line-height:1.65;min-height:56px}
+.planner{display:grid;grid-template-columns:minmax(0,1.27fr) minmax(0,.73fr);gap:17px;align-items:start}.pad{padding:24px}.date-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.iconbtn,.softbtn{background:#f7f8fc;color:#53607a;border:1px solid #e8ebf3;border-radius:9px;padding:9px 12px;font-size:12px;font-weight:750}.iconbtn:hover,.softbtn:hover{background:#f0eeff;color:#6258cf}.date-input{height:38px;border:1px solid #e5e9f1;border-radius:9px;padding:0 8px;color:var(--ink);background:white;font-size:12px;max-width:158px}.daystrip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:17px 0 15px}.day{border:1px solid #edf0f4;border-radius:11px;background:#fbfcff;padding:10px 3px;min-width:0;text-align:center;min-height:67px;color:#8994a5}.day .wk{font-size:10px}.day .d{font-size:20px;font-weight:820;color:#49536a;margin-top:3px}.day.active{background:#6b60ec;border-color:#6b60ec;color:#ebe9ff;box-shadow:0 6px 16px #6b60ec29}.day.active .d{color:white}.day-dot{height:4px;width:4px;background:#22a784;border-radius:50%;margin:4px auto 0}.day.active .day-dot{background:white}
+.weekinfo{font-size:12px;color:#8b95a6;border-bottom:1px solid var(--line);padding-bottom:13px;margin-bottom:12px}.slot{border:1px solid #e9edf5;border-radius:13px;padding:15px;margin:11px 0}.slot-top{display:flex;align-items:start;justify-content:space-between;gap:8px}.slot-title{font-size:15px;font-weight:850}.slot-time{margin-top:5px;font-size:12px;color:#818ca0}.slot-badge{padding:6px 9px;border-radius:7px;background:#f4f4ff;color:#675ee5;font-size:11px;font-weight:800;white-space:nowrap}.slot-badge.present{background:#e6f7ef;color:#15856d}.slot-badge.absent{background:#fff0f1;color:#d65f68}.slot-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.pillbtn{flex:1;min-width:92px;border:1px solid #e6e9f0;background:white;color:#68738c;padding:10px 8px;border-radius:9px;font-size:12px;font-weight:780}.pillbtn.yes{background:#e9f8f1;color:#118467;border-color:#d8f1e5}.pillbtn.no{background:#fff0f0;color:#c95b64;border-color:#ffdddd}.pillbtn.selected{outline:2px solid currentColor;outline-offset:-2px}.empty{padding:40px 14px;color:#99a2b4;text-align:center;font-size:13px;line-height:1.9}.empty b{display:block;color:#57637a;font-size:15px}.right-stack{display:grid;gap:17px}.form-field{display:grid;gap:7px;margin-bottom:12px}.form-field label{font-size:12px;font-weight:770;color:#667287}input[type=number],select,.form-field input[type=date],.form-field input[type=text]{width:100%;background:#fbfcfe;border:1px solid #e6eaf1;color:#344058;border-radius:10px;padding:11px 12px;font-size:13px;min-height:42px}.form-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{background:var(--p);color:white;border:0;border-radius:10px;padding:12px 15px;font-size:13px;font-weight:790}.btn:hover{background:#5148cf}.btn.gray{background:#f1efff;color:#5a50cc}.btn.danger{background:#fff1f1;color:#c45a64}.full{width:100%}.mini-note{color:#96a0af;font-size:11px;line-height:1.75;margin-top:9px}.divider{height:1px;background:var(--line);margin:19px 0}.history{margin-top:16px;max-height:325px;overflow-y:auto}.history-item{display:flex;gap:9px;align-items:center;border-bottom:1px solid #eff1f6;padding:11px 0}.status-dot{width:30px;height:30px;display:grid;place-items:center;border-radius:10px;background:#e9f9f1;color:#17866b;font-size:14px;flex-shrink:0}.status-dot.absent{background:#fff0f2;color:#d76870}.history-text{flex:1;min-width:0}.history-text b{font-size:12px}.history-text small{display:block;color:#9ba3b2;margin-top:3px;font-size:11px}.delete{border:none;background:#f7f8fb;color:#8b96a9;border-radius:8px;padding:7px 9px;font-size:12px}.delete:hover{background:#fff0f1;color:#bd5e68}
+.settings{margin-top:18px}.settings summary{list-style:none;cursor:pointer;font-weight:780;font-size:13px;color:#6a62d7}.settings summary::-webkit-details-marker{display:none}.settings .settings-inner{padding-top:16px}.setting-row{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;margin:11px 0;color:#657087}.setting-row input{max-width:100px}.settings-help{font-size:11px;color:#939bac;line-height:1.8}.warn{background:#fff9ed;color:#8d7442;border:1px solid #f4e6bc;border-radius:11px;padding:11px 13px;font-size:11px;line-height:1.75;margin-top:15px}.controls{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}footer{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:31px;padding:15px 0;border-top:1px solid #e8ecf3;font-size:11px;line-height:1.8;color:#9da7b6}.toast{position:fixed;bottom:22px;right:22px;max-width:calc(100vw - 40px);padding:13px 18px;background:#27334c;border-radius:11px;color:white;font-size:12px;box-shadow:0 13px 35px #1c27403a;display:none;z-index:10}.toast.show{display:block}.muted{color:#8996a7}.hidden{display:none!important}.scope-pill{display:inline-block;margin-top:5px;padding:5px 9px;border-radius:20px;color:#4b6e78;background:#eaf5f5;font-size:10px;font-weight:800}.scope-pill.annual{color:#9e4d79;background:#fceef7}.course-goal{border-top:1px solid var(--line);margin-top:13px;padding-top:13px}.course-goal>label{display:block;font-size:11px;font-weight:760;color:#68738a;margin-bottom:7px}.goal-controls{display:flex;gap:7px;align-items:center;position:relative}.goal-controls input{width:100%;min-width:0;max-width:135px;height:36px;padding:5px 25px 5px 10px;border:1px solid #e6eaf1;border-radius:8px;background:#fbfcff;font-size:12px}.goal-controls .percent-mark{position:absolute;left:calc(min(135px, 100% - 87px) - 18px);font-size:11px;color:#8792a4;pointer-events:none}.goal-controls button{padding:8px 12px;flex:0 0 auto}.goal-hint{font-size:10.5px;color:#8793a6;line-height:1.6;margin:9px 0 0;min-height:32px}.goal-hint.alert{color:#ce6067;font-weight:750}.scope-note{font-size:12px;color:#6e7893;line-height:1.9;margin:11px 0 0}.ratecard .huge{letter-spacing:-2px}.ring-inner .smaller{font-size:22px}.setting-row label{min-width:0}.setting-row small{font-size:10px}
+@media(max-width:900px){.course-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.planner{grid-template-columns:1fr}.right-stack{grid-template-columns:1fr 1fr}.overview{grid-template-columns:1fr}.ratecard{min-height:210px}}
+@media(max-width:600px){.container{width:calc(100% - 28px)}main{padding-top:29px}.hero{display:block}.smallmeta{display:inline-block;margin-top:15px}.course-grid,.right-stack{grid-template-columns:1fr}.ratecard{padding:22px;min-height:190px}.ring{width:127px;height:127px;flex-basis:127px;padding:11px}.ring-inner b{font-size:21px}.huge{font-size:52px}.tile{padding:17px;min-height:98px}.tile-value{font-size:23px}.tiles{gap:10px}.pad{padding:19px 16px}.heading{align-items:start;flex-wrap:wrap}.daystrip{gap:3px}.day{padding:9px 2px}.day .d{font-size:17px}.slot-actions{gap:6px}.semester{font-size:11px;padding:8px 10px}.logo{font-size:20px}.course{padding:19px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="container nav"><div class="brand"><div class="mark" aria-hidden="true">✓</div><div><div class="logo">attendly<span>.</span></div><div class="caption">CAMPUS ATTENDANCE TRACKER</div></div></div><div class="semester">2026–27 · 逐科獨立追蹤</div></div></header>
+<main class="container">
+<section class="hero"><div><div class="eyebrow">YOUR ATTENDANCE, IN CONTROL</div><h1>每一堂，<em>心中有數。</em></h1><p class="subtitle">7 科獨立計算出席率 · 6 科單學期、CED4831M 全學年。</p></div><div class="smallmeta">Sem 1 · 2026/08/30–2027/01/16</div></section>
+<section class="overview" aria-label="各科出席紀錄概覽">
+ <div class="card ratecard"><div><div class="overline">獨立科目追蹤</div><div class="huge"><span id="coursesCount">7</span><small> 科</small></div><div class="support" id="overallDescription">7 / 7 科暫無缺席紀錄 · 各科不合併計算</div><div class="tag" id="rateTag">✓ 暫時全部科目無缺席紀錄</div></div><div class="ring" id="ring" role="img" aria-label="7/7 科尚未記錄走堂"><div class="ring-inner"><b class="smaller"><span id="fullCourseCount">7</span> / 7</b><span>無缺席科目</span></div></div></div>
+ <div class="tiles"><div class="card tile"><div class="tile-label">已記錄出席（逐科累計時數）</div><div class="tile-value"><span id="presentHours">4</span><small> hrs</small></div></div><div class="card tile"><div class="tile-label">已記錄走堂（時數）</div><div class="tile-value"><span id="absentHours">0</span><small> hrs</small></div></div><div class="card tile"><div class="tile-label">單學期科目</div><div class="tile-value">6<small> 科</small></div></div><div class="card tile"><div class="tile-label">已設定獨立目標</div><div class="tile-value"><span id="goalCount">0</span><small> / 7 科</small></div></div></div>
+</section>
+<div class="note"><strong>計算方式：</strong> 每科預計最終出席率 =（<strong>該科總學時 − 該科已記錄走堂時數</strong>）÷ 該科總學時。<strong>每科完全獨立，沒有跨科總出席率。</strong> 預設假設未記錄嘅課堂都會出席，因此顯示的是預測值，唔係學校官方截至今日出席率。上方時數只係紀錄摘要，唔會用嚟合併計出席百分比。</div>
+<section class="section"><div class="heading"><div><h2>各科出席率</h2><p>已輸入 7 科資料。CED4831M 用全年 26 hrs 作分母，其餘 6 科只計一個 Sem；目標亦逐科獨立設定。</p></div></div><div class="course-grid" id="courseGrid"></div></section>
+<section class="section planner" aria-label="逐日課堂紀錄">
+ <section class="card pad"><div class="heading"><div><h2>每日時間表</h2><p>選擇日期，按課堂「走堂」或「已出席」；再按一次可更改。</p></div><div class="date-tools"><button class="iconbtn" type="button" id="prevWeek" title="上一星期">←</button><input class="date-input" type="date" id="pickDate" aria-label="選擇課堂日期"><button class="iconbtn" type="button" id="nextWeek" title="下一星期">→</button><button class="softbtn" type="button" id="todayBtn">今日</button></div></div><div class="daystrip" id="days"></div><div class="weekinfo" id="weekInfo"></div><div id="scheduledSlots" aria-live="polite"></div><div class="warn"><b>待核實：</b>圖片部分課堂週數同科目總學時唔完全一致，尤其 SDD4005：圖示週五第 1–15 週各 2 hrs（合共 30 hrs），但你提供總學時係 26 hrs。系統以 <b>26 hrs</b> 作出席率分母；課堂日期暫依圖片顯示，唔會自行決定邊兩堂取消。CED4831M 首個 Sem 暫按圖片週數顯示；<b>第二個 Sem 未有時間表</b>，可以先手動補登。</div></section>
+ <div class="right-stack">
+  <section class="card pad"><div class="heading"><div><h2>補登 / 額外課堂</h2><p>適用於 CED4841 及 CED4831M 第二個 Sem 待補時間表。</p></div></div><form id="manualForm"><div class="form-field"><label for="manualCourse">科目</label><select id="manualCourse"></select></div><div class="form-cols"><div class="form-field"><label for="manualDate">日期</label><input type="date" id="manualDate" required></div><div class="form-field"><label for="manualHours">時數 (hrs)</label><input type="number" id="manualHours" min="0.5" max="24" step="0.5" value="2" required></div></div><div class="form-field"><label for="manualNote">備註（選填）</label><input type="text" id="manualNote" maxlength="70" placeholder="例如：補堂 / 特別 Workshop"></div><div class="form-cols"><button type="submit" name="status" value="present" class="btn">✓ 記錄出席</button><button type="submit" name="status" value="absent" class="btn danger">× 記錄走堂</button></div></form><div class="mini-note">CED4841 已出席 4 hrs 已計入基準，唔需要再補登。其他 6 科以秋季 Sem 計（2026/08/30–2027/01/16）；CED4831M 容許跨 Sem 補登。</div></section>
+  <section class="card pad"><div class="heading"><div><h2>最近紀錄</h2><p>刪除錯誤紀錄後會即時重新計算。</p></div></div><div class="history" id="history" aria-live="polite"></div></section>
+ </div>
+</section>
+<section class="section card pad"><div class="heading"><div><h2>設定及備份</h2><p>每科目標可以喺上方科目卡片獨立設定；紀錄只儲存在目前瀏覽器。</p></div></div>
+<p class="scope-note"><b>週期：</b> CED3802、CED4841、CED4811、CED3801、CED4812、SDD4005 各自只計 2026 秋季一個 Sem；<b>CED4831M 跨兩個 Sem</b>，26 hrs 全年累計，唔會喺第二個 Sem 自動歸零。GPA 兩個 Sem 後結算嘅資訊已標註，但網頁目前只計出席率，唔會計 GPA。</p>
+<details class="settings"><summary>▸ 進階設定：更改每科總學時、已出席基準</summary><div class="settings-inner"><p class="settings-help">以下資料可以自行更正；科目目標請到對應卡片設定。已完成出席基準唔可以重複補登。</p><div id="courseSettings"></div><button type="button" class="btn gray" id="saveCourseSettings">儲存科目設定</button></div></details>
+<div class="divider"></div><div class="controls"><button type="button" id="exportJson" class="softbtn">↓ 匯出 JSON 備份</button><button type="button" id="exportCsv" class="softbtn">↓ 匯出 CSV 紀錄</button><button type="button" id="importBtn" class="softbtn">↑ 匯入 JSON 備份（支援 V2）</button><input type="file" id="importFile" accept=".json,application/json" class="hidden"><button type="button" id="resetBtn" class="softbtn" style="color:#c85f6b">重設全部紀錄</button></div><p class="mini-note">新版可沿用同瀏覽器嘅 V2 紀錄，亦支援匯入 V2 JSON。建議先喺舊版匯出 JSON 備份。更換檔案位置、瀏覽器或清除網站資料後，localStorage 未必會自動跟住搬。</p></section>
+<footer><div>Attendly V3 · 2026–27 學年 · 離線單檔 HTML<br>個人紀錄只供參考；正式出席率以院校系統為準。</div><div id="footerDate"></div></footer>
+</main><div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(()=>{'use strict';
+const SEM_START='2026-08-30';
+const SEM_END='2027-01-16';
+const COURSES=[
+ {id:'CED3802',total:39,base:0,scope:'semester',color:'#6b62eb',label:'Lecture · 星期三',desc:'週三 12:30–15:30 · 2026 秋季',slots:[{dow:3,start:'12:30',end:'15:30',hours:3,label:'Lecture',weeks:null}]},
+ {id:'CED4841',total:13,base:4,scope:'semester',color:'#ec946b',label:'Workshop · 時間不固定',desc:'時間待通知 · 已出席 4 hrs',slots:[]},
+ {id:'CED4811',total:52,base:0,scope:'semester',color:'#2d9a87',label:'Lecture + Tutorial',desc:'週二 15:30–17:30 · 週四 10:30–12:30',slots:[{dow:2,start:'15:30',end:'17:30',hours:2,label:'Tutorial',weeks:null},{dow:4,start:'10:30',end:'12:30',hours:2,label:'Lecture',weeks:null}]},
+ {id:'CED3801',total:39,base:0,scope:'semester',color:'#589ed5',label:'Lecture · 星期四',desc:'週四 13:30–16:30 · Wk1–4, 6–16',slots:[{dow:4,start:'13:30',end:'16:30',hours:3,label:'Lecture',weeks:[1,2,3,4,6,7,8,9,10,11,12,13,14,15,16]}]},
+ {id:'CED4812',total:52,base:0,scope:'semester',color:'#ab83d5',label:'Lecture + Tutorial',desc:'週一 15:30–17:30 · 週五 10:30–12:30',slots:[{dow:1,start:'15:30',end:'17:30',hours:2,label:'Lecture',weeks:[2,3,4,5,6,7,9,10,11,12,13,14,15,16]},{dow:5,start:'10:30',end:'12:30',hours:2,label:'Tutorial',weeks:null}]},
+ {id:'SDD4005',total:26,base:0,scope:'semester',color:'#d99a4a',label:'Tutorial · 星期五',desc:'週五 13:30–15:30 · 圖示 Wk1–15（實際 26 hrs 待核實）',slots:[{dow:5,start:'13:30',end:'15:30',hours:2,label:'Tutorial',weeks:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]}]},
+ {id:'CED4831M',total:26,base:0,scope:'year',color:'#db7f9f',label:'Workshop · 星期一',desc:'跨兩個 Sem · Sem 1 週一 12:30–14:30，Sem 2 待補',slots:[{dow:1,start:'12:30',end:'14:30',hours:2,label:'Workshop',weeks:[2,4,6,10,12,14,16]}]}
+];
+const KEY='attendly-campus-v3', OLD_KEY='attendly-campus-v2';
+const el=id=>document.getElementById(id);
+const cd=()=>{const x=new Date();return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`};
+const fmtHr=x=>String(Math.round(x*10)/10);
+const round=x=>Math.round(x*100000)/100000;
+const toDate=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d,12,0)};
+const validDate=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&strDate(toDate(s))===s;
+const strDate=x=>`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
+const plusDays=(s,n)=>{const d=toDate(s);d.setDate(d.getDate()+n);return strDate(d)};
+const weekNum=s=>Math.floor((Date.UTC(...s.split('-').map((a,i)=>i===1?Number(a)-1:Number(a)))-Date.UTC(2026,7,30))/604800000)+1;
+const wkFormat=s=>new Intl.DateTimeFormat('zh-HK',{month:'numeric',day:'numeric',weekday:'short'}).format(toDate(s));
+const escape=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const safeNum=(x,max=10000)=>typeof x!=='boolean'&&x!==null&&x!==''&&Number.isFinite(Number(x))&&Number(x)>=0&&Number(x)<=max&&Math.round(Number(x)*2)===Number(x)*2;
+function defaultData(){return {v:3,goals:Object.fromEntries(COURSES.map(c=>[c.id,null])),baseline:Object.fromEntries(COURSES.map(c=>[c.id,c.base])),totals:Object.fromEntries(COURSES.map(c=>[c.id,c.total])),entries:[]}}
+function validEntry(e){return e&&typeof e.id==='string'&&e.id.length<160&&validDate(e.date)&&COURSES.some(c=>c.id===e.courseId)&&['present','absent'].includes(e.type)&&safeNum(e.hours,24)&&Number(e.hours)>0&&['manual','slot'].includes(e.source)}
+function cleanData(obj){
+ if(!obj||![2,3].includes(obj.v)||!Array.isArray(obj.entries))throw Error('唔係 Attendly V2 / V3 備份');
+ const d=defaultData();
+ for(const c of COURSES){
+  if(safeNum(obj.baseline?.[c.id],10000))d.baseline[c.id]=Number(obj.baseline[c.id]);
+  if(safeNum(obj.totals?.[c.id],10000)&&Number(obj.totals[c.id])>0)d.totals[c.id]=Number(obj.totals[c.id]);
+  const g=obj.goals?.[c.id];if(g!==null&&g!==undefined&&g!==''&&Number.isFinite(Number(g))&&Number(g)>=0&&Number(g)<=100)d.goals[c.id]=Number(g);
+  if(d.baseline[c.id]>d.totals[c.id])d.baseline[c.id]=d.totals[c.id];
+ }
+ d.entries=obj.entries.filter(validEntry).slice(-20000).map(e=>({id:String(e.id),date:e.date,courseId:e.courseId,type:e.type,hours:Number(e.hours),source:e.source,slotId:String(e.slotId||'').slice(0,150),note:String(e.note||'').slice(0,70),createdAt:Number(e.createdAt)||0}));
+ const seen=new Set();d.entries=d.entries.filter(e=>{if(seen.has(e.id))return false;seen.add(e.id);return true});return d;
+}
+let data=defaultData(), saveWarning=false, migrated=false;
+try{
+ const saved=localStorage.getItem(KEY),legacy=!saved?localStorage.getItem(OLD_KEY):null;
+ if(saved)data=cleanData(JSON.parse(saved));
+ else if(legacy){data=cleanData(JSON.parse(legacy));migrated=true;localStorage.setItem(KEY,JSON.stringify(data))}
+}catch(err){saveWarning=true}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data));saveWarning=false}catch(err){saveWarning=true;toast('無法喺瀏覽器儲存，請匯出 JSON 備份')}}
+function sumCourse(id){
+ const entries=data.entries.filter(e=>e.courseId===id);
+ const present=round(Number(data.baseline[id])+entries.filter(e=>e.type==='present').reduce((a,e)=>a+e.hours,0));
+ const absent=round(entries.filter(e=>e.type==='absent').reduce((a,e)=>a+e.hours,0));
+ const total=Number(data.totals[id]),tracked=round(present+absent);
+ return {present,absent,total,tracked,rate:Math.max(0,(1-absent/total)*100),goal:data.goals[id]};
+}
+const ratefmt=v=>(Math.round(v*10)/10).toFixed(1).replace(/\.0$/,'');
+const uid=()=>typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);
+let selected=cd(),toastT;
+function toast(s){const t=el('toast');t.textContent=s;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),4100)}
+function dateSlots(s){
+ const week=weekNum(s),dow=toDate(s).getDay();if(s<SEM_START||s>SEM_END||week<1||week>16)return [];
+ return COURSES.flatMap(c=>c.slots.filter(x=>x.dow===dow&&(!x.weeks||x.weeks.includes(week))).map(x=>({id:`${c.id}|${s}|${x.start}|${x.label}`,date:s,courseId:c.id,hours:x.hours,start:x.start,end:x.end,label:x.label}))).sort((a,b)=>a.start.localeCompare(b.start));
+}
+const getSlotEntry=s=>data.entries.find(e=>e.id===s.id);
+function canAdd(courseId,hours,previousHours=0){const t=sumCourse(courseId);return round(t.tracked-previousHours+hours)<=t.total+0.00001}
+function recordSlot(slot,type){
+ if(slot.date>cd()){toast('只可以記錄今日或已經上過嘅課堂');return}
+ const old=getSlotEntry(slot);
+ if(old&&old.type===type){data.entries=data.entries.filter(e=>e.id!==slot.id);toast('已取消呢堂嘅紀錄')}
+ else{
+  if(!canAdd(slot.courseId,slot.hours,old?.hours||0)){toast(`${slot.courseId} 紀錄加埋會超出科目總學時，請核對時間表或更改總學時`);return}
+  const newEntry={id:slot.id,date:slot.date,courseId:slot.courseId,type,hours:slot.hours,source:'slot',slotId:slot.id,note:slot.label+` ${slot.start}–${slot.end}`,createdAt:Date.now()};
+  data.entries=data.entries.filter(e=>e.id!==slot.id);data.entries.push(newEntry);toast(`${slot.courseId} 已記錄${type==='present'?'出席':'走堂'} ${fmtHr(slot.hours)} hrs`);
+ }
+ save();render();
+}
+function renderSummary(){
+ const total=COURSES.length,withoutAbsence=COURSES.filter(c=>sumCourse(c.id).absent===0).length;
+ const present=round(COURSES.reduce((acc,c)=>acc+sumCourse(c.id).present,0));
+ const absent=round(COURSES.reduce((acc,c)=>acc+sumCourse(c.id).absent,0));
+ const withGoal=COURSES.filter(c=>data.goals[c.id]!==null).length;
+ el('coursesCount').textContent=total;el('fullCourseCount').textContent=withoutAbsence;
+ el('ring').style.setProperty('--value',(withoutAbsence/total*100).toFixed(2)+'%');
+ el('ring').setAttribute('aria-label',`${withoutAbsence}/${total} 科尚未記錄走堂（非出席百分比）`);
+ el('presentHours').textContent=fmtHr(present);el('absentHours').textContent=fmtHr(absent);
+ el('goalCount').textContent=withGoal;
+ el('overallDescription').textContent=`${withoutAbsence} / ${total} 科暫無缺席紀錄 · 各科不合併計算`;
+ el('rateTag').textContent=absent===0?'✓ 暫時全部科目無缺席紀錄':`已記錄 ${total-withoutAbsence} 科有走堂`;
+ el('rateTag').style.cssText=absent===0?'':'background:#fff0f1;color:#c45c68';
+}
+function goalText(t){
+ if(t.goal===null)return '未設定目標 · 可稍後設定每科要求';
+ const remaining=round(t.total*(1-t.goal/100)-t.absent);
+ if(remaining<-.00001)return `已超出目標容許缺席 ${fmtHr(-remaining)} hrs`;
+ const block=Math.floor((remaining+0.00000001)*2)/2;
+ return `目標 ${ratefmt(t.goal)}% · 尚可缺席最多 ${fmtHr(block)} hrs（以 0.5hr 計）`;
+}
+function renderCourses(){
+ el('courseGrid').innerHTML=COURSES.map(c=>{
+  const t=sumCourse(c.id),pct=ratefmt(t.rate),completed=Math.min(100,Math.max(0,t.tracked/t.total*100));
+  const goal=t.goal===null?'':String(t.goal),scope=c.scope==='year'?'兩個 Sem · 全學年':'一個 Sem · 2026 秋季';
+  const over=t.tracked>t.total+0.00001;
+  return `<article class="card course" data-course="${c.id}">
+   <div class="course-top"><div><div class="course-name">${c.id}</div><div class="course-type">${escape(c.label)}</div></div><div class="dot" style="background:${c.color}"></div></div>
+   <span class="scope-pill ${c.scope==='year'?'annual':''}">${scope}</span>
+   <div class="course-rate">${pct}<small>%</small></div>
+   <div class="course-hint">該科預計最終出席率 · ${fmtHr(t.total)} hrs ${c.scope==='year'?'／全年':'／學期'}</div>
+   <div class="track"><div style="width:${completed}%;background:${c.color}"></div></div>
+   <div class="course-line"><span>已出席 <b>${fmtHr(t.present)}h</b></span><span>走堂 <b>${fmtHr(t.absent)}h</b></span></div>
+   <div class="course-line"><span>已記錄 <b>${fmtHr(t.tracked)}h / ${fmtHr(t.total)}h</b></span><span>未記錄 <b>${fmtHr(Math.max(0,t.total-t.tracked))}h</b></span></div>
+   <div class="course-time">${escape(c.desc)}${over?'<br><b style="color:#c2605f">注意：紀錄超過科目總學時</b>':''}</div>
+   <div class="course-goal"><label for="goal-${c.id}">該科目標出席率（選填）</label><div class="goal-controls"><input id="goal-${c.id}" type="number" min="0" max="100" step="0.1" data-goal-input="${c.id}" value="${goal}" placeholder="例如 80" aria-label="${c.id} 目標出席率"><span class="percent-mark">%</span><button type="button" class="softbtn" data-save-goal="${c.id}">儲存</button></div><p class="goal-hint ${t.goal!==null&&t.rate<t.goal?'alert':''}">${goalText(t)}</p></div>
+   </article>`
+ }).join('');
+}
+function renderCalendar(){
+ el('pickDate').value=selected;
+ const cur=toDate(selected),monday=plusDays(selected,-(cur.getDay()+6)%7),today=cd();
+ el('days').innerHTML=Array.from({length:7},(_,i)=>{const d=plusDays(monday,i),daynum=Number(d.slice(-2));const names=['一','二','三','四','五','六','日'];return `<button type="button" class="day ${d===selected?'active':''}" data-date="${d}" aria-label="${d}" aria-pressed="${d===selected}"><div class="wk">週${names[i]}</div><div class="d">${daynum}</div>${dateSlots(d).length?'<div class="day-dot"></div>':''}</button>`}).join('');
+ const wn=weekNum(selected),slots=dateSlots(selected);
+ el('weekInfo').textContent=`${wkFormat(selected)} · ${selected>=SEM_START&&selected<=SEM_END&&wn>=1&&wn<=20?`秋季第 ${wn} 週`:'不在已輸入秋季課堂週內'} · ${slots.length} 節已編排課堂`;
+ if(!slots.length){el('scheduledSlots').innerHTML=`<div class="empty"><b>呢日冇已編排課堂</b>${selected>SEM_END?'第二個 Semester（CED4831M）時間表未提供，可喺右側手動補登。':'可以揀其他日期，或者用右邊手動補登不固定／額外課堂。'}</div>`;return}
+ el('scheduledSlots').innerHTML=slots.map(slot=>{const e=getSlotEntry(slot),present=e?.type==='present',absent=e?.type==='absent',future=slot.date>today;return `<div class="slot"><div class="slot-top"><div><div class="slot-title">${slot.courseId} <span class="muted" style="font-weight:500;font-size:12px">${slot.label}</span></div><div class="slot-time">${slot.start}–${slot.end} · ${fmtHr(slot.hours)} hrs</div></div><div class="slot-badge ${present?'present':absent?'absent':''}">${present?'✓ 已出席':absent?'× 已走堂':'未記錄'}</div></div><div class="slot-actions"><button type="button" class="pillbtn yes ${present?'selected':''}" data-slot="${escape(slot.id)}" data-status="present" ${future?'disabled title="未來課堂暫不可記錄"':''}>✓ 已出席</button><button type="button" class="pillbtn no ${absent?'selected':''}" data-slot="${escape(slot.id)}" data-status="absent" ${future?'disabled title="未來課堂暫不可記錄"':''}>× 走堂</button></div></div>`}).join('');
+}
+function renderHistory(){
+ const a=data.entries.slice().sort((x,y)=>y.date.localeCompare(x.date)||y.createdAt-x.createdAt).slice(0,60);
+ el('history').innerHTML=a.length?a.map(e=>`<div class="history-item"><span class="status-dot ${e.type==='absent'?'absent':''}">${e.type==='present'?'✓':'×'}</span><div class="history-text"><b>${escape(e.courseId)} · ${e.type==='present'?'出席':'走堂'} ${fmtHr(e.hours)}h</b><small>${escape(e.date)} · ${escape(e.note||'手動紀錄')}</small></div><button class="delete" type="button" data-delete="${escape(e.id)}" title="刪除紀錄" aria-label="刪除 ${escape(e.courseId)} ${escape(e.date)} 紀錄">刪除</button></div>`).join(''):'<div class="empty" style="padding:23px 0"><b>暫未有逐堂紀錄</b>CED4841 已有過往出席基準 4 hrs。</div>';
+}
+function renderSettings(){
+ el('courseSettings').innerHTML=COURSES.map(c=>`<div class="setting-row"><div style="min-width:100px"><b>${c.id}</b><small style="display:block;color:#97a0b1;margin-top:4px">${c.scope==='year'?'兩個 Sem':'一個 Sem'}</small></div><label>總學時 <input type="number" step="0.5" min="0.5" max="10000" data-total="${c.id}" value="${fmtHr(data.totals[c.id])}"></label><label>已出席基準 <input type="number" step="0.5" min="0" max="10000" data-baseline="${c.id}" value="${fmtHr(data.baseline[c.id])}"></label></div>`).join('');
+}
+function render(){renderSummary();renderCourses();renderCalendar();renderHistory()}
+function download(dataBlob,name){const url=URL.createObjectURL(dataBlob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200)}
+const cls=el('manualCourse');cls.innerHTML=COURSES.map(c=>`<option value="${c.id}">${c.id}${c.scope==='year'?'（兩個 Sem）':''}</option>`).join('');cls.value='CED4841';
+el('manualDate').value=selected;
+el('footerDate').textContent=new Intl.DateTimeFormat('zh-HK',{year:'numeric',month:'long',day:'numeric'}).format(new Date());
+el('days').addEventListener('click',evt=>{const btn=evt.target.closest('[data-date]');if(!btn)return;selected=btn.dataset.date;el('manualDate').value=selected>cd()?cd():selected;renderCalendar()});
+el('pickDate').addEventListener('change',e=>{if(!validDate(e.target.value))return;selected=e.target.value;el('manualDate').value=selected>cd()?cd():selected;renderCalendar()});
+el('prevWeek').addEventListener('click',()=>{selected=plusDays(selected,-7);el('manualDate').value=selected>cd()?cd():selected;renderCalendar()});
+el('nextWeek').addEventListener('click',()=>{selected=plusDays(selected,7);el('manualDate').value=selected>cd()?cd():selected;renderCalendar()});
+el('todayBtn').addEventListener('click',()=>{selected=cd();el('manualDate').value=selected;renderCalendar()});
+el('scheduledSlots').addEventListener('click',e=>{const btn=e.target.closest('[data-slot]');if(!btn)return;const s=dateSlots(selected).find(s=>s.id===btn.dataset.slot);if(s)recordSlot(s,btn.dataset.status)});
+el('courseGrid').addEventListener('click',e=>{
+ const btn=e.target.closest('[data-save-goal]');if(!btn)return;const id=btn.dataset.saveGoal;const inp=el('goal-'+id);if(!inp)return;
+ const value=inp.value.trim();if(value!==''&&(!Number.isFinite(Number(value))||Number(value)<0||Number(value)>100)){toast('目標需介乎 0% 至 100%');return}
+ data.goals[id]=value===''?null:Number(value);save();renderCourses();renderSummary();toast(`${id} 目標${value===''?'已清除':'已設定為 '+ratefmt(Number(value))+'%'}`);
+});
+el('history').addEventListener('click',e=>{const b=e.target.closest('[data-delete]');if(!b)return;const record=data.entries.find(x=>x.id===b.dataset.delete);if(record&&!confirm(`刪除 ${record.courseId} ${record.date} ${record.type==='present'?'出席':'走堂'} ${record.hours} 小時紀錄？`))return;data.entries=data.entries.filter(x=>x.id!==b.dataset.delete);save();render();toast('紀錄已刪除')});
+let submitStatus='present';el('manualForm').querySelectorAll('button[type=submit]').forEach(b=>b.addEventListener('click',()=>{submitStatus=b.value}));
+el('manualForm').addEventListener('submit',e=>{
+ e.preventDefault();const c=el('manualCourse').value,d=el('manualDate').value,h=Number(el('manualHours').value),note=el('manualNote').value.trim();
+ if(!COURSES.some(x=>x.id===c)||!validDate(d)||d>cd()){toast('請揀今日或過去嘅有效日期');return}
+ if(d<SEM_START||(c!=='CED4831M'&&d>SEM_END)){toast(c==='CED4831M'?'CED4831M 學年紀錄唔可以早過 2026/08/30':'其他 6 科只計算 2026/08/30–2027/01/16 呢個 Sem');return}
+ if(!safeNum(h,24)||h<.5){toast('時數必須係 0.5 至 24，以半小時遞增');return}
+ if(!canAdd(c,h)){toast(`${c} 呢筆紀錄會超出科目總學時，請核對已登記嘅堂數`);return}
+ data.entries.push({id:uid(),date:d,courseId:c,type:submitStatus,hours:h,source:'manual',slotId:'',note:note||'手動補登',createdAt:Date.now()});save();el('manualNote').value='';render();toast(`已記錄 ${c} ${submitStatus==='absent'?'走堂':'出席'} ${fmtHr(h)} hrs`);
+});
+el('saveCourseSettings').addEventListener('click',()=>{
+ const baselines={},totals={};for(const c of COURSES){
+  const total=Number(document.querySelector(`[data-total="${c.id}"]`).value),base=Number(document.querySelector(`[data-baseline="${c.id}"]`).value);
+  if(!safeNum(total,10000)||total<=0||!safeNum(base,10000)){toast(`${c.id} 數值有誤，請輸入 0.5 小時倍數`);return}
+  if(base>total){toast(`${c.id} 已出席基準唔可以大於總學時`);return}
+  const logged=data.entries.filter(e=>e.courseId===c.id).reduce((v,e)=>v+e.hours,0);
+  if(round(base+logged)>total){toast(`${c.id} 新設定會令已記錄學時超出總學時`);return}
+  totals[c.id]=total;baselines[c.id]=base;
+ }
+ data.totals=totals;data.baseline=baselines;save();render();renderSettings();toast('已儲存各科總學時及出席基準');
+});
+el('exportJson').addEventListener('click',()=>{download(new Blob([JSON.stringify({...data,exportedAt:new Date().toISOString()},null,2)],{type:'application/json;charset=utf-8'}),`Attendly_2026-27_備份_${cd()}.json`);toast('已匯出 JSON 備份')});
+el('exportCsv').addEventListener('click',()=>{
+ const quote=v=>{const s=String(v??''),safe=/^[=+@\-\t\r]/.test(s)?"'"+s:s;return '"'+safe.replace(/"/g,'""')+'"'};
+ const rows=[['日期','科目','結算週期','紀錄','時數','備註'],...COURSES.map(c=>['',c.id,c.scope==='year'?'兩個 Sem':'一個 Sem','已出席基準',data.baseline[c.id],'']),...data.entries.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(e=>[e.date,e.courseId,COURSES.find(c=>c.id===e.courseId)?.scope==='year'?'兩個 Sem':'一個 Sem',e.type==='present'?'出席':'走堂',e.hours,e.note])];
+ download(new Blob(['\ufeff'+rows.map(r=>r.map(quote).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'}),`Attendly_2026-27_紀錄_${cd()}.csv`);toast('已匯出 CSV 紀錄');
+});
+el('importBtn').addEventListener('click',()=>el('importFile').click());
+el('importFile').addEventListener('change',async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ try{if(file.size>3_000_000)throw Error('檔案太大');const raw=JSON.parse(await file.text()),parsed=cleanData(raw);
+  if(!confirm(`確定匯入 ${parsed.entries.length} 筆紀錄？將覆蓋目前 V3 紀錄。${raw.v===2?' 舊版整體目標唔會自動套用到每科。':''}`))return;
+  data=parsed;save();render();renderSettings();toast(raw.v===2?'V2 備份已成功升級至 V3':'備份匯入成功');
+ }catch(err){toast('匯入失敗：'+String(err.message||err))}finally{e.target.value=''}
+});
+el('resetBtn').addEventListener('click',()=>{if(!confirm('確定重設全部 7 科紀錄及各科目標？CED4841 過往已出席 4 hrs 會還原。建議先備份。'))return;data=defaultData();save();render();renderSettings();toast('已重設至初始狀態')});
+renderSettings();render();if(saveWarning)toast('瀏覽器儲存可能受限制，請定期匯出 JSON 備份');else if(migrated)toast('已沿用 V2 既有紀錄；舊整體目標不會套用至獨立科目');
+})();
+</script>
+</body></html>
